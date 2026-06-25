@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0E0E0E" />
+  <title>Tareas de Hoy · Chamberí Brothers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar__brand">
+        <span class="eyebrow">Chamberí Brothers · Operativa diaria</span>
+        <h1 class="topbar__title">Tareas de hoy</h1>
+        <span class="topbar__date" id="dateLabel">—</span>
+      </div>
+      <div class="topbar__score">
+        <div class="score">
+          <span class="score__done" id="scoreDone">0</span>
+          <span class="score__sep">/</span>
+          <span class="score__total" id="scoreTotal">0</span>
+        </div>
+        <span class="score__label">hechas</span>
+      </div>
+    </header>
+
+    <nav class="modebar" role="tablist" aria-label="Vista">
+      <button class="modebtn is-active" data-mode="persona" role="tab" aria-selected="true">👤 Por persona</button>
+      <button class="modebtn" data-mode="turno" role="tab" aria-selected="false">🌅 Por turno</button>
+    </nav>
+
+    <div class="chipbar" id="chipbar"></div>
+
+    <main class="board" id="board" aria-live="polite"></main>
+
+    <div class="emptystate" id="emptyState" hidden>
+      <div class="emptystate__mark">✓</div>
+      <h2>¡Todo hecho!</h2>
+      <p>No quedan tareas pendientes en esta vista. Buen trabajo.</p>
+    </div>
+
+    <footer class="footer">
+      <span id="sourceLabel" class="footer__src">datos: semilla</span>
+      <button class="ghostbtn" id="reloadBtn">↻ Recargar</button>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="assertive"></div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

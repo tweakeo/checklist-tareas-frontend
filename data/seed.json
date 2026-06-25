@@ -1,0 +1,552 @@
+{
+  "generatedAt": "2026-06-25",
+  "weekday": "Jueves",
+  "source": "seed (export Notion 2026-06-25)",
+  "tasks": [
+    {
+      "id": "36ae4f0f-ad19-810e-a33a-dd7c724c3ac6",
+      "tarea": "REVISIÓN DE RENTABILIDAD POR PRODUCTO",
+      "responsables": [
+        "Manu"
+      ],
+      "turno": "🌆 Entreturnos",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Baja",
+      "categoria": [
+        "Administración"
+      ],
+      "mins": 30,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8138-a029-dc497b464d41",
+      "tarea": "REVISIÓN DE PRECIOS CON PROVEEDORES",
+      "responsables": [
+        "Manu"
+      ],
+      "turno": "🌆 Entreturnos",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Media",
+      "categoria": [
+        "Administración"
+      ],
+      "mins": 20,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8167-a3a1-eaabb9a179c0",
+      "tarea": "CONTROL GASTO ADS Y VENTAS PLATAFORMAS DELIVERY",
+      "responsables": [
+        "Manu"
+      ],
+      "turno": "🌆 Entreturnos",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Media",
+      "categoria": [
+        "Administración"
+      ],
+      "mins": 20,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8169-9367-e659fb41322a",
+      "tarea": "INVENTARIO COMPLETO MANUAL — RECUENTO FÍSICO",
+      "responsables": [
+        "Chopo"
+      ],
+      "turno": "🌆 Entreturnos",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Reposición"
+      ],
+      "mins": 45,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8175-9239-f42d4b36b6cc",
+      "tarea": "PLAN Y REVISIÓN DE SALSAS DE LA SEMANA",
+      "responsables": [
+        "Chopo"
+      ],
+      "turno": "🌆 Entreturnos",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Media",
+      "categoria": [
+        "Administración"
+      ],
+      "mins": 15,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-817c-8ee5-c56421c99746",
+      "tarea": "CONFIRMAR TURNOS EQUIPO SEMANA SIGUIENTE",
+      "responsables": [
+        "Manu"
+      ],
+      "turno": "🌆 Entreturnos",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Alta",
+      "categoria": [
+        "Administración"
+      ],
+      "mins": 10,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-818e-8589-dd8cdbeda7e1",
+      "tarea": "REPONER PACKAGING COMPLETO DESDE ALMACÉN",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌆 Entreturnos",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Alta",
+      "categoria": [
+        "Reposición"
+      ],
+      "mins": 20,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-81a7-96fb-ede15096419f",
+      "tarea": "PRODUCCIÓN DE SALSAS — LAB",
+      "responsables": [
+        "Chopo"
+      ],
+      "turno": "🌆 Entreturnos",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Servicio"
+      ],
+      "mins": 90,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-81be-821c-d9d1efd9def1",
+      "tarea": "DESMONTAR Y LIMPIAR FREIDORA DOBLE A FONDO",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌆 Entreturnos",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Limpieza"
+      ],
+      "mins": 45,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-81dc-b7dc-c92f5d61e992",
+      "tarea": "REVISIÓN DE STOCK E INVENTARIO EN NOTION",
+      "responsables": [
+        "León"
+      ],
+      "turno": "🌆 Entreturnos",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Alta",
+      "categoria": [
+        "Administración"
+      ],
+      "mins": 20,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8100-8b31-d47d366d93ac",
+      "tarea": "PREPARAR SALA — MESAS, SILLAS, BARRA",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Limpieza"
+      ],
+      "mins": 15,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8104-a361-dc4bcc412c58",
+      "tarea": "ENCENDER EQUIPOS: PLANCHA, FREIDORA DOBLE, FRIGOS",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Servicio"
+      ],
+      "mins": 5,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8106-bdf6-e808b2b446a2",
+      "tarea": "LIMPIAR Y RECOGER SALA",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌙 Cierre",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Limpieza"
+      ],
+      "mins": 20,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8107-9517-ceae8397e74c",
+      "tarea": "REVISAR STOCK MÍNIMO ANTES DE ABRIR",
+      "responsables": [
+        "Chopo",
+        "León",
+        "Manu"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo",
+        "Martes"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Administración"
+      ],
+      "mins": 10,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8135-9753-dbe4947ca1e1",
+      "tarea": "VACIAR PAPELERAS Y SACAR BASURA",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌙 Cierre",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Limpieza"
+      ],
+      "mins": 10,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8148-9216-d32c512b928f",
+      "tarea": "PASAR LAVAVAJILLAS — UTENSILIOS Y BANDEJAS",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌙 Cierre",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Limpieza"
+      ],
+      "mins": 15,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-814b-8e0b-cdc858ffaf2a",
+      "tarea": "PREPARAR MISE EN PLACE COCINA",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Servicio"
+      ],
+      "mins": 20,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-815c-9ded-c0e9faa349d3",
+      "tarea": "LIMPIAR PLANCHA A FONDO",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌙 Cierre",
+      "dia": [
+        "Jueves"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Limpieza"
+      ],
+      "mins": 15,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-8188-88d7-d55897b60ac2",
+      "tarea": "ENCENDER Y VERIFICAR TABLETS DELIVERY",
+      "responsables": [
+        "León",
+        "Chopo",
+        "Manu"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Servicio"
+      ],
+      "mins": 5,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-81bd-a71b-f2afdbf7fb32",
+      "tarea": "LIMPIAR BAÑO (REPONER JABÓN, PAPEL, VACIAR PAPELERA)",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌙 Cierre",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Limpieza"
+      ],
+      "mins": 10,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-81cb-9000-c5d398bcb0f5",
+      "tarea": "SACAR CARNE DEL CONGELADOR SEGÚN PREVISIÓN",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Servicio"
+      ],
+      "mins": 15,
+      "hechaHoy": false
+    },
+    {
+      "id": "36ae4f0f-ad19-81cf-b994-cfb01fe68895",
+      "tarea": "VERIFICAR Y ANOTAR TEMPERATURAS CÁMARAS (APPCC)",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Administración"
+      ],
+      "mins": 5,
+      "hechaHoy": false
+    },
+    {
+      "id": "361e4f0f-ad19-8104-a517-dc49602eb751",
+      "tarea": "REPONER BEBIDAS EN NEVERAS",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌙 Cierre",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Media",
+      "categoria": [
+        "Reposición"
+      ],
+      "mins": null,
+      "hechaHoy": false
+    },
+    {
+      "id": "361e4f0f-ad19-815c-abd4-e5a5a6c3122b",
+      "tarea": "RECIBIR PEDIDO MAKRO (si hay)",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Lunes",
+        "Jueves"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Reposición"
+      ],
+      "mins": null,
+      "hechaHoy": false
+    },
+    {
+      "id": "361e4f0f-ad19-8181-8966-cf17416450f4",
+      "tarea": "HACER PEDIDOS DE REPOSICIÓN [MAKRO, AMAZON,…]",
+      "responsables": [
+        "Manu"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+      ],
+      "prioridad": "Alta",
+      "categoria": [
+        "Reposición"
+      ],
+      "mins": null,
+      "hechaHoy": false
+    },
+    {
+      "id": "361e4f0f-ad19-81bd-8831-d19418d584d0",
+      "tarea": "REPONER SOBRES",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Lunes",
+        "Jueves",
+        "Sábado"
+      ],
+      "prioridad": "Core (inflexible)",
+      "categoria": [
+        "Reposición"
+      ],
+      "mins": null,
+      "hechaHoy": false
+    },
+    {
+      "id": "361e4f0f-ad19-81c8-a352-ce020af27961",
+      "tarea": "REPONER BOLSITAS SAZONADOR",
+      "responsables": [
+        "Equipo"
+      ],
+      "turno": "🌅 Apertura",
+      "dia": [
+        "Lunes",
+        "Jueves",
+        "Sábado"
+      ],
+      "prioridad": "Alta",
+      "categoria": [
+        "Reposición"
+      ],
+      "mins": null,
+      "hechaHoy": false
+    }
+  ]
+}
