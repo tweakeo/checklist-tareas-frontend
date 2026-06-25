@@ -14,7 +14,8 @@
   src: url("fonts/Chunk.ttf") format("truetype");
   font-weight: 400; font-style: normal; font-display: swap;
 }
-@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap");
+/* Alfa Slab One = respaldo con acentos para la display (Chunk no trae á/é/í/ó/ú/ñ/ü) */
+@import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap");
 
 :root {
   --pc-ink: #0E0E0E; --pc-ink-soft: #1A1A1A;
@@ -25,7 +26,7 @@
   --pc-grey-300: #C9C3B5; --pc-grey-200: #E2DCCC; --pc-grey-100: #EFEADD;
   --success: #2F7D3A;
 
-  --font-display: "Chunk Five Print", "Roboto Slab", Georgia, serif;
+  --font-display: "Chunk Five Print", "Alfa Slab One", "Roboto Slab", Georgia, serif;
   --font-body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "Space Mono", ui-monospace, Menlo, monospace;
 
@@ -98,7 +99,9 @@ body { overscroll-behavior-y: none; }
   transition: transform var(--dur, 120ms) var(--ease-out), box-shadow 120ms var(--ease-out);
 }
 .modebtn.is-active {
-  background: var(--pc-ink); color: var(--pc-paper); box-shadow: var(--shadow-stamp);
+  background: var(--pc-ink); color: var(--pc-paper);
+  /* sombra en rojo de marca: evita el negro-sobre-negro y da acento Paletos */
+  box-shadow: 4px 4px 0 0 var(--pc-red);
 }
 .modebtn:active { transform: translate(2px, 2px); box-shadow: none; }
 
