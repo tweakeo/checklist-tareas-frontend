@@ -15,3 +15,7 @@ dist/
 
 # Cloudflare
 .wrangler/
+
+# Playwright local screenshots
+.playwright-mcp/
+verify-fixes.png
