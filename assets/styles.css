@@ -27,6 +27,9 @@
   --success: #2F7D3A;
 
   --font-display: "Chunk Five Print", "Alfa Slab One", "Roboto Slab", Georgia, serif;
+  /* Para títulos que pueden llevar acentos (p.ej. "LEÓN"): una sola fuente CON tildes,
+     así no se mezcla Chunk (sin acentos) con el respaldo dentro de una misma palabra. */
+  --font-display-accents: "Alfa Slab One", "Roboto Slab", Georgia, serif;
   --font-body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "Space Mono", ui-monospace, Menlo, monospace;
 
@@ -125,7 +128,7 @@ body { overscroll-behavior-y: none; }
   background: var(--pc-grey-100); position: sticky; top: 176px; z-index: 10;
 }
 .group__title {
-  font-family: var(--font-display); font-size: 24px; text-transform: uppercase;
+  font-family: var(--font-display-accents); font-size: 24px; text-transform: uppercase;
   letter-spacing: 0; display: flex; align-items: center; gap: 10px;
 }
 .group__title .group__dot { width: 16px; height: 16px; border-radius: 50%; }
