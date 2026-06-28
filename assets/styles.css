@@ -59,7 +59,10 @@ body { overscroll-behavior-y: none; }
 /* ---------------- TOPBAR ---------------- */
 /* Cabecera fija: título + barra de vista como un único bloque opaco.
    Evita franjas transparentes y solapes al hacer scroll. */
-.stickyhead { position: sticky; top: 0; z-index: 30; background: var(--pc-paper); }
+/* padding-bottom (en vez de margin en .filters) para que --head-h lo incluya: así la
+   cabecera de grupo se ancla DEBAJO de los chips, con una franja opaca que tapa las
+   tarjetas al hacer scroll (sin rendijas ni solapes con las sombras de los chips). */
+.stickyhead { position: sticky; top: 0; z-index: 30; background: var(--pc-paper); padding-bottom: 14px; }
 .topbar {
   display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
   padding: 20px 0 16px;
@@ -110,7 +113,7 @@ body { overscroll-behavior-y: none; }
 }
 
 /* ---------------- FILTER BARS (turno × persona, apilables) ---------------- */
-.filters { display: flex; flex-direction: column; gap: 8px; margin: 2px 0 14px; }
+.filters { display: flex; flex-direction: column; gap: 8px; margin: 2px 0 0; }
 .filterrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .filterrow__label {
   font-family: var(--font-mono); font-weight: 700; font-size: 11px;
@@ -139,7 +142,7 @@ body { overscroll-behavior-y: none; }
 .group__head {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 14px 18px; border-top: 2px solid var(--pc-ink); border-bottom: 2px solid var(--pc-ink);
-  background: var(--pc-grey-100); position: sticky; top: calc(var(--head-h, 188px) - 1px); z-index: 10;
+  background: var(--pc-grey-100); position: sticky; top: var(--head-h, 188px); z-index: 10;
 }
 .group__title {
   font-family: var(--font-display); font-size: 24px; text-transform: uppercase;
