@@ -132,11 +132,14 @@ body { overscroll-behavior-y: none; }
 
 /* ---------------- BOARD / GROUPS ---------------- */
 .board { display: flex; flex-direction: column; gap: 26px; }
-.group { border: 2px solid var(--pc-ink); background: var(--pc-paper-pure); box-shadow: var(--shadow-stamp); }
+/* El borde superior vive en .group__head (no en .group) para que la línea de arriba
+   se quede nítida cuando la cabecera del grupo se ancla al hacer scroll. Se ancla 1px
+   bajo la cabecera fija para que no asome una rendija del contenido por encima. */
+.group { border: 2px solid var(--pc-ink); border-top: 0; background: var(--pc-paper-pure); box-shadow: var(--shadow-stamp); }
 .group__head {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 14px 18px; border-bottom: 2px solid var(--pc-ink);
-  background: var(--pc-grey-100); position: sticky; top: var(--head-h, 188px); z-index: 10;
+  padding: 14px 18px; border-top: 2px solid var(--pc-ink); border-bottom: 2px solid var(--pc-ink);
+  background: var(--pc-grey-100); position: sticky; top: calc(var(--head-h, 188px) - 1px); z-index: 10;
 }
 .group__title {
   font-family: var(--font-display); font-size: 24px; text-transform: uppercase;
