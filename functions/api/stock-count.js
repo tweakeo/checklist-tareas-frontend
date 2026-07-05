@@ -39,6 +39,7 @@ export async function onRequestPost({ request, env }) {
     };
     if (turno) props.TURNO = { select: { name: turno } };
     if (it.id) props["ARTÍCULO"] = { relation: [{ id: it.id }] };
+    if (it.nota) props.NOTAS = { rich_text: [{ text: { content: String(it.nota).slice(0, 300) } }] };
 
     const r = await fetch("https://api.notion.com/v1/pages", {
       method: "POST",
