@@ -49,6 +49,12 @@
       font-family: var(--font-mono); font-weight: 700; font-size: 19px;
     }
     .item__est.is-on { background: var(--pc-yellow); }
+    .item__prev {
+      flex-shrink: 0; min-width: 60px; min-height: 52px; padding: 0 10px; cursor: pointer;
+      border: 2px solid var(--pc-ink); background: var(--pc-paper-pure); border-radius: 0;
+      font-family: var(--font-mono); font-weight: 700; font-size: 16px; white-space: nowrap;
+    }
+    .item__prev:active { background: var(--pc-yellow); }
     .estrow { width: 100%; display: none; gap: 6px; flex-wrap: wrap; padding: 6px 0 2px; }
     .estrow.is-open { display: flex; }
     .estchip {
