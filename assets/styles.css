@@ -97,7 +97,7 @@ body { overscroll-behavior-y: none; }
 .topbar__right { display: flex; align-items: flex-start; gap: 12px; flex-shrink: 0; }
 .viewtoggle {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-  min-width: 88px; padding: 10px 12px; cursor: pointer;
+  width: 132px; min-height: 70px; line-height: 1.2; padding: 10px 12px; cursor: pointer;
   background: var(--pc-paper-pure); color: var(--pc-ink);
   border: 2px solid var(--pc-ink); border-radius: 0; box-shadow: var(--shadow-stamp);
   font-family: var(--font-display); text-transform: uppercase;
@@ -248,7 +248,7 @@ a.viewtoggle { text-decoration: none; color: inherit; }
   .topbar { flex-direction: row; align-items: flex-start; }
   .checkbtn, .donebadge { width: 78px; min-height: 70px; }
   .task__name { font-size: 17px; }
-  .viewtoggle { min-width: 72px; padding: 8px 8px; }
+  .viewtoggle { width: 108px; min-height: 62px; padding: 8px 8px; }
   .viewtoggle__icon { font-size: 22px; }
   .viewtoggle__label { font-size: 11px; }
 }
