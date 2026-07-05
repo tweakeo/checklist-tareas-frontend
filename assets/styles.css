@@ -105,6 +105,7 @@ body { overscroll-behavior-y: none; }
 }
 .viewtoggle__icon { font-size: 26px; line-height: 1; }
 .viewtoggle__label { font-size: 12px; letter-spacing: 0.01em; }
+a.viewtoggle { text-decoration: none; color: inherit; }
 .viewtoggle:hover { background: var(--pc-yellow); }
 .viewtoggle:active { transform: translate(3px, 3px); box-shadow: none; }
 .viewtoggle.is-active {
