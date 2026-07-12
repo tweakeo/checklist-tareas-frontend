@@ -18,6 +18,19 @@
     .dateinput select {
       width: 100%; font-family: var(--font-mono); font-weight: 700; font-size: 14px;
       background: var(--pc-yellow); border: 0; color: var(--pc-ink); cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 30px;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230E0E0E' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+    .dateinput option {
+      background: var(--pc-yellow);
+      color: var(--pc-ink);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 14px;
     }
     .loc { border-bottom: 1px solid var(--pc-grey-200); }
     .loc:last-child { border-bottom: 0; }
