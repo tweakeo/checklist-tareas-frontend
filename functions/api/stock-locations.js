@@ -52,16 +52,20 @@ export async function onRequestGet({ env }) {
     const nombre = artId ? null : (titulo.includes("—") ? titulo.split("—").slice(1).join("—").trim() : titulo);
     (porUbic[u] = porUbic[u] || []).push({ fecha, created: p.created_time, artId, nombre, cantidad });
   }
+  // Por artículo, su último registro en esa ubicación (aunque sea de fechas distintas):
+  // cada fila del formulario puede autorrellenarse con su propio último valor.
   const ultimo = {};
   for (const u of Object.keys(porUbic)) {
     const rows = porUbic[u];
     const fmax = rows.reduce((m, r) => (r.fecha > m ? r.fecha : m), "");
     const dedup = new Map();
     rows
-      .filter((r) => r.fecha === fmax)
-      .sort((a, b) => (a.created < b.created ? -1 : 1))
+      .sort((a, b) => (a.fecha + a.created < b.fecha + b.created ? -1 : 1))
       .forEach((r) => dedup.set(r.artId || "txt:" + r.nombre, r));
-    ultimo[u] = { fecha: fmax, items: [...dedup.values()].map((r) => ({ id: r.artId, nombre: r.nombre, cantidad: r.cantidad })) };
+    ultimo[u] = {
+      fecha: fmax,
+      items: [...dedup.values()].map((r) => ({ id: r.artId, nombre: r.nombre, cantidad: r.cantidad, fecha: r.fecha })),
+    };
   }
 
   const ubicaciones = ubicRows

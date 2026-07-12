@@ -13,6 +13,7 @@ const state = {
   artById: new Map(),
   qty: new Map(),      // `${ubicId}|${artId}` -> number
   notas: new Map(),    // `${ubicId}|${artId}` -> nota (estimación…)
+  fillers: new Map(),  // `${ubicId}|${artId}` -> setVal de esa fila (autorrelleno)
   extras: new Map(),   // ubicId -> Set(artId) añadidos fuera de plan
   counted: new Map(),  // ubicId -> "HH:MM"
   turno: null,
@@ -73,6 +74,7 @@ async function load() {
 function renderBoard() {
   const board = $("#board");
   board.innerHTML = "";
+  state.fillers.clear();
   const zonas = [...new Set(state.ubicaciones.map((u) => u.zona))];
   for (const zona of zonas) {
     const grupo = document.createElement("section");
@@ -116,33 +118,27 @@ function locCard(u) {
   const body = document.createElement("div");
   body.className = "loc__body";
 
-  // «Sin cambios»: replica el último conteo registrado en esta ubicación
-  if (u.ultimo && u.ultimo.items.length) {
+  // «Sin cambios»: autorrellena las filas con el último registro de cada artículo
+  // (NO envía nada: se revisa a la vista y se confirma con «Guardar conteo»)
+  const prevConId = (u.ultimo?.items || []).filter((it) => it.id && state.artById.has(it.id));
+  if (prevConId.length) {
     const nc = document.createElement("button");
     nc.className = "nochange";
-    const orig = `↩ Sin cambios desde el último conteo (${u.ultimo.fecha}, ${u.ultimo.items.length} art.)`;
-    nc.textContent = orig;
-    let timer;
-    nc.addEventListener("click", async () => {
-      if (!nc.classList.contains("is-confirm")) {
-        nc.classList.add("is-confirm");
-        nc.textContent = "¿Confirmar? Se registrarán las mismas cifras que la última vez";
-        timer = setTimeout(() => { nc.classList.remove("is-confirm"); nc.textContent = orig; }, 4000);
-        return;
+    nc.textContent = `↩ Rellenar con el último registro (${prevConId.length} art. · últ. ${u.ultimo.fecha})`;
+    nc.addEventListener("click", () => {
+      let filled = 0;
+      for (const it of prevConId) {
+        const key = `${u.id}|${it.id}`;
+        if (!state.fillers.has(key)) {
+          if (!state.extras.has(u.id)) state.extras.set(u.id, new Set());
+          state.extras.get(u.id).add(it.id);
+          itemsWrap.appendChild(itemRow(u, it.id, true));
+        }
+        state.fillers.get(key)(it.cantidad, `Sin cambios respecto al registro de ${it.fecha}.`);
+        filled++;
       }
-      clearTimeout(timer);
-      nc.classList.remove("is-confirm");
-      nc.disabled = true;
-      nc.textContent = "Guardando…";
-      const items = u.ultimo.items.map((it) => ({
-        id: it.id || undefined,
-        nombre: it.id ? (state.artById.get(it.id)?.nombre || it.nombre || "?") : it.nombre,
-        cantidad: it.cantidad,
-        nota: `Sin cambios respecto al conteo de ${u.ultimo.fecha}.`,
-      }));
-      const ok = await enviar(el, u, items);
-      nc.disabled = false;
-      nc.textContent = ok ? `✓ Registrado sin cambios (${items.length} art.)` : orig;
+      refreshSave(el, u);
+      toast(`↩ ${filled} fila${filled > 1 ? "s" : ""} rellenada${filled > 1 ? "s" : ""} — revisa las cifras y pulsa Guardar`);
     });
     body.appendChild(nc);
   }
@@ -214,10 +210,12 @@ function locCard(u) {
 
 function itemRow(u, artId, extra) {
   const art = state.artById.get(artId);
+  const prev = (u.ultimo?.items || []).find((it) => it.id === artId);
   const row = document.createElement("div");
   row.className = "item" + (extra ? " item--extra" : "");
   row.innerHTML = `
     <span class="item__name">${esc(corto(art.nombre))}</span>
+    ${prev ? `<button class="item__prev" title="Rellenar con el último registro (${esc(prev.fecha)})">↩ ${prev.cantidad}</button>` : ""}
     <button class="item__est" title="Estimación rápida: fracción de la capacidad máxima">≈</button>
     <div class="qty">
       <button class="qty__btn" data-d="-1" aria-label="menos">−</button>
@@ -244,6 +242,12 @@ function itemRow(u, artId, extra) {
     const card = row.closest(".loc");
     if (card) refreshSave(card, u);
   };
+  state.fillers.set(key, setVal);
+  if (prev) {
+    row.querySelector(".item__prev").addEventListener("click", () =>
+      setVal(prev.cantidad, `Sin cambios respecto al registro de ${prev.fecha}.`)
+    );
+  }
   row.querySelectorAll(".qty__btn").forEach((b) =>
     b.addEventListener("click", () => {
       const cur = state.qty.has(key) ? state.qty.get(key) : null;
@@ -280,6 +284,7 @@ function itemRow(u, artId, extra) {
     row.querySelector(".qty__del").addEventListener("click", () => {
       setVal(null);
       state.extras.get(u.id)?.delete(artId);
+      state.fillers.delete(key);
       const card = row.closest(".loc");
       row.remove();
       if (card) refreshSave(card, u);
