@@ -75,19 +75,19 @@ function renderBoard() {
   const board = $("#board");
   board.innerHTML = "";
   state.fillers.clear();
-  const zonas = [...new Set(state.ubicaciones.map((u) => u.zona))];
-  for (const zona of zonas) {
-    const grupo = document.createElement("section");
-    grupo.className = "group";
+  const grupos = [...new Set(state.ubicaciones.map((u) => u.grupo))];
+  for (const grupo of grupos) {
+    const grupoEl = document.createElement("section");
+    grupoEl.className = "group";
     const head = document.createElement("div");
     head.className = "group__head";
-    head.innerHTML = `<span class="group__title">${esc(zona || "Sin zona")}</span>`;
-    grupo.appendChild(head);
+    head.innerHTML = `<span class="group__title">${esc(grupo || "Sin grupo")}</span>`;
+    grupoEl.appendChild(head);
     const list = document.createElement("div");
     list.className = "group__list";
-    for (const u of state.ubicaciones.filter((x) => x.zona === zona)) list.appendChild(locCard(u));
-    grupo.appendChild(list);
-    board.appendChild(grupo);
+    for (const u of state.ubicaciones.filter((x) => x.grupo === grupo)) list.appendChild(locCard(u));
+    grupoEl.appendChild(list);
+    board.appendChild(grupoEl);
   }
   updateScore();
 }
