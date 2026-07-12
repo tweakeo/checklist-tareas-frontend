@@ -59,7 +59,10 @@ body { overscroll-behavior-y: none; }
 /* ---------------- TOPBAR ---------------- */
 /* Cabecera fija: título + barra de vista como un único bloque opaco.
    Evita franjas transparentes y solapes al hacer scroll. */
-.stickyhead { position: sticky; top: 0; z-index: 30; background: var(--pc-paper); }
+/* padding-bottom (en vez de margin en .filters) para que --head-h lo incluya: así la
+   cabecera de grupo se ancla DEBAJO de los chips, con una franja opaca que tapa las
+   tarjetas al hacer scroll (sin rendijas ni solapes con las sombras de los chips). */
+.stickyhead { position: sticky; top: 0; z-index: 30; background: var(--pc-paper); padding-bottom: 14px; }
 .topbar {
   display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
   padding: 20px 0 16px;
@@ -94,7 +97,7 @@ body { overscroll-behavior-y: none; }
 .topbar__right { display: flex; align-items: flex-start; gap: 12px; flex-shrink: 0; }
 .viewtoggle {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-  min-width: 88px; padding: 10px 12px; cursor: pointer;
+  width: 132px; min-height: 70px; line-height: 1.2; padding: 10px 12px; cursor: pointer;
   background: var(--pc-paper-pure); color: var(--pc-ink);
   border: 2px solid var(--pc-ink); border-radius: 0; box-shadow: var(--shadow-stamp);
   font-family: var(--font-display); text-transform: uppercase;
@@ -102,6 +105,7 @@ body { overscroll-behavior-y: none; }
 }
 .viewtoggle__icon { font-size: 26px; line-height: 1; }
 .viewtoggle__label { font-size: 12px; letter-spacing: 0.01em; }
+a.viewtoggle { text-decoration: none; color: inherit; }
 .viewtoggle:hover { background: var(--pc-yellow); }
 .viewtoggle:active { transform: translate(3px, 3px); box-shadow: none; }
 .viewtoggle.is-active {
@@ -110,7 +114,7 @@ body { overscroll-behavior-y: none; }
 }
 
 /* ---------------- FILTER BARS (turno × persona, apilables) ---------------- */
-.filters { display: flex; flex-direction: column; gap: 8px; margin: 2px 0 14px; }
+.filters { display: flex; flex-direction: column; gap: 8px; margin: 2px 0 0; }
 .filterrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .filterrow__label {
   font-family: var(--font-mono); font-weight: 700; font-size: 11px;
@@ -132,11 +136,14 @@ body { overscroll-behavior-y: none; }
 
 /* ---------------- BOARD / GROUPS ---------------- */
 .board { display: flex; flex-direction: column; gap: 26px; }
-.group { border: 2px solid var(--pc-ink); background: var(--pc-paper-pure); box-shadow: var(--shadow-stamp); }
+/* El borde superior vive en .group__head (no en .group) para que la línea de arriba
+   se quede nítida cuando la cabecera del grupo se ancla al hacer scroll. Se ancla 1px
+   bajo la cabecera fija para que no asome una rendija del contenido por encima. */
+.group { border: 2px solid var(--pc-ink); border-top: 0; background: var(--pc-paper-pure); box-shadow: var(--shadow-stamp); }
 .group__head {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 14px 18px; border-bottom: 2px solid var(--pc-ink);
-  background: var(--pc-grey-100); position: sticky; top: var(--head-h, 188px); z-index: 10;
+  padding: 14px 18px; border-top: 2px solid var(--pc-ink); border-bottom: 2px solid var(--pc-ink);
+  background: #fff; position: sticky; top: var(--head-h, 188px); z-index: 10;
 }
 .group__title {
   font-family: var(--font-display); font-size: 24px; text-transform: uppercase;
@@ -174,6 +181,13 @@ body { overscroll-behavior-y: none; }
 .tag--prio-alta { background: var(--pc-yellow); }
 .tag--prio-media { background: var(--pc-paper-pure); }
 .tag--prio-baja { background: var(--pc-paper-pure); color: var(--pc-grey-500); }
+
+.tag--emergent {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+  font-weight: 600;
+}
 
 /* CHECK button — the hero touch target */
 .checkbtn {
@@ -241,7 +255,7 @@ body { overscroll-behavior-y: none; }
   .topbar { flex-direction: row; align-items: flex-start; }
   .checkbtn, .donebadge { width: 78px; min-height: 70px; }
   .task__name { font-size: 17px; }
-  .viewtoggle { min-width: 72px; padding: 8px 8px; }
+  .viewtoggle { width: 108px; min-height: 62px; padding: 8px 8px; }
   .viewtoggle__icon { font-size: 22px; }
   .viewtoggle__label { font-size: 11px; }
 }
