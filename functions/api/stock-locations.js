@@ -76,6 +76,7 @@ export async function onRequestGet({ env }) {
         nombre: text(P["UBICACIÓN"]?.title),
         equipo: P.EQUIPO?.select?.name || "",
         zona: P.ZONA?.select?.name || "",
+        grupo: P["EQUIPO GRUPO"]?.select?.name || "",
         rol: P.ROL?.select?.name || "",
         orden: P["ORDEN CONTEO"]?.number ?? 999,
         plan: (P["ARTÍCULOS"]?.relation || []).map((r) => r.id),
