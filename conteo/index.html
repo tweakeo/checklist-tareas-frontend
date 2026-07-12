@@ -17,7 +17,7 @@
     }
     .dateinput select {
       width: 100%; font-family: var(--font-mono); font-weight: 700; font-size: 14px;
-      background: transparent; border: 0; color: var(--pc-ink); cursor: pointer;
+      background: var(--pc-yellow); border: 0; color: var(--pc-ink); cursor: pointer;
     }
     .loc { border-bottom: 1px solid var(--pc-grey-200); }
     .loc:last-child { border-bottom: 0; }
@@ -150,8 +150,11 @@
           <span class="filterrow__label">Fecha</span>
           <input type="date" id="fechaInput" class="dateinput" />
         </div>
-        <div class="filterrow" id="equipoBar" role="group" aria-label="Filtro por equipo">
+        <div class="filterrow" id="equipoBar">
           <span class="filterrow__label">Equipo</span>
+          <select id="equipoSelect" class="dateinput" style="min-height:46px;font-size:14px;">
+            <option value="">Todos</option>
+          </select>
         </div>
         <div class="filterrow" id="productoBar">
           <span class="filterrow__label">Producto</span>
@@ -178,6 +181,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="assertive"></div>
 
-  <script src="conteo.js?v=6"></script>
+  <script src="conteo.js?v=7"></script>
 </body>
 </html>
