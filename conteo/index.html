@@ -114,6 +114,11 @@
     .loc__save:active { transform: translate(3px, 3px); box-shadow: none; }
     .loc__save:disabled { background: var(--pc-grey-300); color: var(--pc-grey-500); box-shadow: none; cursor: default; }
     .loc__save.is-saving { background: var(--pc-grey-700); }
+
+    /* Grupos acordeón: contraídos por defecto */
+    .group__list { display: none; }
+    .group.is-open .group__list { display: flex; }
+    .group__head:hover { background: var(--pc-grey-100); }
   </style>
 </head>
 <body>
@@ -160,6 +165,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="assertive"></div>
 
-  <script src="conteo.js?v=4"></script>
+  <script src="conteo.js?v=5"></script>
 </body>
 </html>
