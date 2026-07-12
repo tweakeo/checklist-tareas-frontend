@@ -135,7 +135,8 @@
     /* Grupos acordeón: contraídos por defecto */
     .group__list { display: none; }
     .group.is-open .group__list { display: flex; }
-    .group__head:hover { background: var(--pc-grey-100); }
+    .group__head { background: var(--pc-yellow); cursor: pointer; }
+    .group__head:hover { filter: brightness(0.97); }
   </style>
 </head>
 <body>
@@ -163,12 +164,6 @@
           <span class="filterrow__label">Fecha</span>
           <input type="date" id="fechaInput" class="dateinput" />
         </div>
-        <div class="filterrow" id="equipoBar">
-          <span class="filterrow__label">Equipo</span>
-          <select id="equipoSelect" class="dateinput" style="min-height:46px;font-size:14px;">
-            <option value="">Todos</option>
-          </select>
-        </div>
         <div class="filterrow" id="productoBar">
           <span class="filterrow__label">Producto</span>
           <select id="productoSelect" class="dateinput" style="min-height:46px;font-size:14px;">
@@ -194,6 +189,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="assertive"></div>
 
-  <script src="conteo.js?v=7"></script>
+  <script src="conteo.js?v=8"></script>
 </body>
 </html>
