@@ -32,6 +32,10 @@ function init() {
   state.turno = turnoPorHora(new Date().getHours());
   renderTurnos();
   $("#reloadBtn").addEventListener("click", load);
+  $("#equipoSelect").addEventListener("change", () => {
+    state.equipo = $("#equipoSelect").value || null;
+    renderBoard();
+  });
   $("#productoSelect").addEventListener("change", () => {
     state.producto = $("#productoSelect").value || null;
     renderBoard();
@@ -62,15 +66,15 @@ function renderTurnos() {
 }
 
 function renderEquipo() {
-  const bar = $("#equipoBar");
-  bar.querySelectorAll(".chip").forEach((c) => c.remove());
+  const sel = $("#equipoSelect");
+  sel.innerHTML = '<option value="">Todos</option>';
   const grupos = [...new Set(state.ubicaciones.map((u) => u.grupo))].sort();
   for (const g of grupos) {
-    const b = document.createElement("button");
-    b.className = "chip" + (state.equipo === g ? " is-active" : "");
-    b.textContent = g;
-    b.addEventListener("click", () => { state.equipo = state.equipo === g ? null : g; renderEquipo(); });
-    bar.appendChild(b);
+    const opt = document.createElement("option");
+    opt.value = g;
+    opt.textContent = g;
+    if (state.equipo === g) opt.selected = true;
+    sel.appendChild(opt);
   }
 }
 
