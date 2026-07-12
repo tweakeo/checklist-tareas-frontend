@@ -14,7 +14,7 @@ const state = {
   turno: null,
 };
 
-const TURNOS = ["Mediodía", "Noche", "Cierre"];
+const TURNOS = ["Apertura", "Entreturnos", "Cierre"];
 
 init();
 
@@ -33,8 +33,8 @@ function localISO(d) {
 }
 
 function turnoPorHora(h) {
-  if (h >= 6 && h < 17) return "Mediodía";
-  if (h >= 17 && h < 23) return "Noche";
+  if (h >= 5 && h < 14) return "Apertura";
+  if (h >= 14 && h < 19) return "Entreturnos";
   return "Cierre";
 }
 
@@ -91,12 +91,15 @@ function locCard(u) {
   el.className = "loc";
   el.dataset.id = u.id;
 
+  const planIds = u.plan.filter((id) => state.artById.has(id));
+
   const head = document.createElement("button");
   head.className = "loc__head";
   head.innerHTML = `
     <span class="loc__name">${esc(u.nombre)}
       ${u.contenido ? `<span class="loc__last">últ.: ${esc(u.contenido)}</span>` : ""}
     </span>
+    ${planIds.length ? `<span class="loc__count">${planIds.length} art.</span>` : ""}
     <span class="locbadge" hidden></span>
     <span class="loc__chev">›</span>`;
   head.addEventListener("click", () => {
@@ -111,8 +114,13 @@ function locCard(u) {
   const itemsWrap = document.createElement("div");
   body.appendChild(itemsWrap);
 
-  const planIds = u.plan.filter((id) => state.artById.has(id));
   for (const artId of planIds) itemsWrap.appendChild(itemRow(u, artId, false));
+  if (!planIds.length) {
+    const hint = document.createElement("p");
+    hint.className = "loc__hint";
+    hint.textContent = "Sin artículos asignados a esta ubicación. Busca abajo lo que hayas visto aquí.";
+    itemsWrap.appendChild(hint);
+  }
 
   // Añadir artículo fuera de plan
   const addWrap = document.createElement("div");
