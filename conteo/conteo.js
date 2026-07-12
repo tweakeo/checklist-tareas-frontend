@@ -1,7 +1,10 @@
 /* Conteo de Stock — formulario táctil sobre las bases del sistema CONTROL DE STOCK.
    Flujo: eliges ubicación → anotas cantidades de sus artículos del plan (o añades
    uno fuera de plan) → Guardar crea las filas en CONTEOS vía /api/stock-count.
-   Campo vacío = artículo NO contado (no se envía). 0 = contado y no queda (rotura). */
+   Campo vacío = artículo NO contado (no se envía). 0 = contado y no queda (rotura).
+   Extras: estimación rápida por fracción de la capacidad (base CAPACIDADES),
+   «Sin cambios» que replica el último conteo de la ubicación, y borrado de filas
+   añadidas fuera de plan. Estimaciones y sin-cambios dejan nota en el registro. */
 
 const $ = (sel) => document.querySelector(sel);
 const state = {
@@ -9,18 +12,19 @@ const state = {
   articulos: [],
   artById: new Map(),
   qty: new Map(),      // `${ubicId}|${artId}` -> number
+  notas: new Map(),    // `${ubicId}|${artId}` -> nota (estimación…)
   extras: new Map(),   // ubicId -> Set(artId) añadidos fuera de plan
   counted: new Map(),  // ubicId -> "HH:MM"
   turno: null,
 };
 
 const TURNOS = ["Apertura", "Entreturnos", "Cierre"];
+const FRACS = [["⅕", 1 / 5], ["¼", 1 / 4], ["⅓", 1 / 3], ["½", 1 / 2], ["⅔", 2 / 3], ["¾", 3 / 4], ["Lleno", 1]];
 
 init();
 
 function init() {
-  const hoy = localISO(new Date());
-  $("#fechaInput").value = hoy;
+  $("#fechaInput").value = localISO(new Date());
   $("#dateLabel").textContent = new Date().toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
   state.turno = turnoPorHora(new Date().getHours());
   renderTurnos();
@@ -111,6 +115,38 @@ function locCard(u) {
 
   const body = document.createElement("div");
   body.className = "loc__body";
+
+  // «Sin cambios»: replica el último conteo registrado en esta ubicación
+  if (u.ultimo && u.ultimo.items.length) {
+    const nc = document.createElement("button");
+    nc.className = "nochange";
+    const orig = `↩ Sin cambios desde el último conteo (${u.ultimo.fecha}, ${u.ultimo.items.length} art.)`;
+    nc.textContent = orig;
+    let timer;
+    nc.addEventListener("click", async () => {
+      if (!nc.classList.contains("is-confirm")) {
+        nc.classList.add("is-confirm");
+        nc.textContent = "¿Confirmar? Se registrarán las mismas cifras que la última vez";
+        timer = setTimeout(() => { nc.classList.remove("is-confirm"); nc.textContent = orig; }, 4000);
+        return;
+      }
+      clearTimeout(timer);
+      nc.classList.remove("is-confirm");
+      nc.disabled = true;
+      nc.textContent = "Guardando…";
+      const items = u.ultimo.items.map((it) => ({
+        id: it.id || undefined,
+        nombre: it.id ? (state.artById.get(it.id)?.nombre || it.nombre || "?") : it.nombre,
+        cantidad: it.cantidad,
+        nota: `Sin cambios respecto al conteo de ${u.ultimo.fecha}.`,
+      }));
+      const ok = await enviar(el, u, items);
+      nc.disabled = false;
+      nc.textContent = ok ? `✓ Registrado sin cambios (${items.length} art.)` : orig;
+    });
+    body.appendChild(nc);
+  }
+
   const itemsWrap = document.createElement("div");
   body.appendChild(itemsWrap);
 
@@ -160,7 +196,16 @@ function locCard(u) {
   save.className = "loc__save";
   save.textContent = "Guardar conteo";
   save.disabled = true;
-  save.addEventListener("click", () => guardar(el, u, save));
+  save.addEventListener("click", async () => {
+    const items = itemsDeCard(u);
+    if (!items.length) return;
+    save.disabled = true;
+    save.classList.add("is-saving");
+    save.textContent = "Guardando…";
+    await enviar(el, u, items);
+    save.classList.remove("is-saving");
+    refreshSave(el, u);
+  });
   body.appendChild(save);
 
   el.appendChild(body);
@@ -173,17 +218,29 @@ function itemRow(u, artId, extra) {
   row.className = "item" + (extra ? " item--extra" : "");
   row.innerHTML = `
     <span class="item__name">${esc(corto(art.nombre))}</span>
+    <button class="item__est" title="Estimación rápida: fracción de la capacidad máxima">≈</button>
     <div class="qty">
       <button class="qty__btn" data-d="-1" aria-label="menos">−</button>
       <input class="qty__num" inputmode="numeric" pattern="[0-9]*" placeholder="—" aria-label="cantidad" />
       <button class="qty__btn" data-d="1" aria-label="más">＋</button>
-      <button class="qty__clear" title="No contar este artículo">✕</button>
-    </div>`;
+      ${extra
+        ? `<button class="qty__clear qty__del" title="Quitar esta fila añadida por error">🗑</button>`
+        : `<button class="qty__clear" title="No contar este artículo">✕</button>`}
+    </div>
+    <div class="estrow">${FRACS.map((f, i) => `<button class="estchip" data-i="${i}">${f[0]}</button>`).join("")}</div>`;
+
   const key = `${u.id}|${artId}`;
   const num = row.querySelector(".qty__num");
-  const setVal = (v) => {
-    if (v === null || v === "" || isNaN(v)) { state.qty.delete(key); num.value = ""; row.classList.remove("has-qty"); }
-    else { const n = Math.max(0, Math.floor(Number(v))); state.qty.set(key, n); num.value = String(n); row.classList.add("has-qty"); }
+  const setVal = (v, nota) => {
+    if (v === null || v === "" || isNaN(v)) {
+      state.qty.delete(key); state.notas.delete(key);
+      num.value = ""; row.classList.remove("has-qty");
+    } else {
+      const n = Math.max(0, Math.floor(Number(v)));
+      state.qty.set(key, n);
+      if (nota) state.notas.set(key, nota); else state.notas.delete(key);
+      num.value = String(n); row.classList.add("has-qty");
+    }
     const card = row.closest(".loc");
     if (card) refreshSave(card, u);
   };
@@ -195,7 +252,41 @@ function itemRow(u, artId, extra) {
     })
   );
   num.addEventListener("input", () => setVal(num.value === "" ? null : num.value));
-  row.querySelector(".qty__clear").addEventListener("click", () => setVal(null));
+
+  // Estimación por fracción de la capacidad (base CAPACIDADES)
+  const estBtn = row.querySelector(".item__est");
+  const estRow = row.querySelector(".estrow");
+  estBtn.addEventListener("click", () => {
+    const abierto = estRow.classList.toggle("is-open");
+    estBtn.classList.toggle("is-on", abierto);
+  });
+  estRow.querySelectorAll(".estchip").forEach((chip) =>
+    chip.addEventListener("click", () => {
+      const cap = (u.caps || {})[artId];
+      if (!cap) {
+        toast("Falta definir la capacidad máxima de este artículo en esta ubicación (base CAPACIDADES).", true);
+        return;
+      }
+      const [label, frac] = FRACS[Number(chip.dataset.i)];
+      const val = Math.max(0, Math.round(frac * cap));
+      setVal(val, `Estimación a ojo: ≈${label} de la capacidad (${val}/${cap}).`);
+      estRow.classList.remove("is-open");
+      estBtn.classList.remove("is-on");
+    })
+  );
+
+  // Fila extra: la papelera elimina la fila entera (añadida por error)
+  if (extra) {
+    row.querySelector(".qty__del").addEventListener("click", () => {
+      setVal(null);
+      state.extras.get(u.id)?.delete(artId);
+      const card = row.closest(".loc");
+      row.remove();
+      if (card) refreshSave(card, u);
+    });
+  } else {
+    row.querySelector(".qty__clear").addEventListener("click", () => setVal(null));
+  }
   return row;
 }
 
@@ -203,7 +294,12 @@ function itemsDeCard(u) {
   const ids = [...u.plan, ...(state.extras.get(u.id) || [])];
   return ids
     .filter((id) => state.qty.has(`${u.id}|${id}`))
-    .map((id) => ({ id, nombre: state.artById.get(id)?.nombre || "?", cantidad: state.qty.get(`${u.id}|${id}`) }));
+    .map((id) => ({
+      id,
+      nombre: state.artById.get(id)?.nombre || "?",
+      cantidad: state.qty.get(`${u.id}|${id}`),
+      nota: state.notas.get(`${u.id}|${id}`) || undefined,
+    }));
 }
 
 function refreshSave(card, u) {
@@ -213,12 +309,7 @@ function refreshSave(card, u) {
   save.textContent = n === 0 ? "Guardar conteo" : `Guardar conteo (${n})`;
 }
 
-async function guardar(card, u, btn) {
-  const items = itemsDeCard(u);
-  if (!items.length) return;
-  btn.disabled = true;
-  btn.classList.add("is-saving");
-  btn.textContent = "Guardando…";
+async function enviar(card, u, items) {
   try {
     const r = await fetch("/api/stock-count", {
       method: "POST",
@@ -241,11 +332,10 @@ async function guardar(card, u, btn) {
     card.classList.remove("is-open");
     toast(`✓ ${data.created} conteo${data.created > 1 ? "s" : ""} registrado${data.created > 1 ? "s" : ""} — ${corto(u.nombre)}`);
     updateScore();
+    return true;
   } catch (e) {
     toast("Error al guardar: " + e.message, true);
-  } finally {
-    btn.classList.remove("is-saving");
-    refreshSave(card, u);
+    return false;
   }
 }
 
