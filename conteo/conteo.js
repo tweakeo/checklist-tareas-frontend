@@ -82,6 +82,10 @@ function renderBoard() {
     const head = document.createElement("div");
     head.className = "group__head";
     head.innerHTML = `<span class="group__title">${esc(grupo || "Sin grupo")}</span>`;
+    head.style.cursor = "pointer";
+    head.addEventListener("click", () => {
+      grupoEl.classList.toggle("is-open");
+    });
     grupoEl.appendChild(head);
     const list = document.createElement("div");
     list.className = "group__list";
