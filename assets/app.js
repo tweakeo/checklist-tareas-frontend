@@ -30,6 +30,7 @@ const state = {
   tasks: [],             // pendientes de hoy (servidor)
   completed: [],         // completadas hoy (servidor)
   view: "pending",       // 'pending' | 'done'
+  taskSource: "recurrent", // 'recurrent' | 'emergent'
   turno: null,           // null = todos los turnos
   person: null,          // null = todas las personas
   done: new Set(),       // ids marcados en esta sesión (eran pendientes)
@@ -67,6 +68,13 @@ async function loadTasks() {
   // Si un filtro activo ya no existe en los datos cargados, lo soltamos.
   if (state.turno && !taskTurnos().includes(state.turno)) state.turno = null;
   if (state.person && !taskPersons().includes(state.person)) state.person = null;
+
+  // Ensure taskSource is valid for the loaded data
+  const hasRecurrent = state.tasks.some(t => t.source === "recurrent") || state.completed.some(t => t.source === "recurrent");
+  const hasEmergent = state.tasks.some(t => t.source === "emergent") || state.completed.some(t => t.source === "emergent");
+  if (state.taskSource === "recurrent" && !hasRecurrent && hasEmergent) state.taskSource = "emergent";
+  if (state.taskSource === "emergent" && !hasEmergent && hasRecurrent) state.taskSource = "recurrent";
+
   $("#sourceLabel").textContent = "datos: " + state.source;
   render();
 }
@@ -74,12 +82,21 @@ async function loadTasks() {
 /* ---------------- HELPERS ---------------- */
 function personsOf(t) { return t.responsables.length ? t.responsables : ["Sin asignar"]; }
 function turnoOf(t) { return t.turno || "Sin turno"; }
-function allToday() { return [...state.tasks, ...state.completed]; }
+function allToday() { 
+  return [...state.tasks, ...state.completed].filter(t => t.source === state.taskSource); 
+}
 
 // Pendientes reales = lo que el servidor da como pendiente menos lo marcado en sesión.
-function pendingTasks() { return state.tasks.filter((t) => !state.done.has(t.id)); }
+function pendingTasks() { 
+  return state.tasks.filter((t) => t.source === state.taskSource && !state.done.has(t.id)); 
+}
 // Completadas = lo que el servidor da como hecho + lo marcado en esta sesión (optimista).
-function completedTasks() { return [...state.completed, ...state.tasks.filter((t) => state.done.has(t.id))]; }
+function completedTasks() { 
+  return [
+    ...state.completed.filter(t => t.source === state.taskSource), 
+    ...state.tasks.filter((t) => t.source === state.taskSource && state.done.has(t.id))
+  ]; 
+}
 
 function uniqueByOrder(values, order) {
   const set = new Set(values);
@@ -126,6 +143,7 @@ function render() {
   renderChrome();
   renderScore();
   renderFilters();
+  renderSourceTabs();
   const list = baseListForView();
   const groups = buildGroups(list);
   board.innerHTML = "";
@@ -157,7 +175,10 @@ function render() {
 // Cabecera variable: título grande + botón/leyenda de la vista.
 function renderChrome() {
   const isDone = state.view === "done";
-  document.querySelector(".topbar__title").textContent = isDone ? "Completadas" : "Tareas de hoy";
+  const sourceName = state.taskSource === "recurrent" ? "Recurrentes" : "Emergentes";
+  document.querySelector(".topbar__title").textContent = isDone 
+    ? `${sourceName} completadas` 
+    : `${sourceName} de hoy`;
   $("#viewToggleLabel").textContent = isDone ? "Pendientes" : "Completadas";
   $("#viewToggleIcon").textContent = isDone ? "↩" : "✓";
   const btn = $("#viewToggle");
@@ -166,23 +187,33 @@ function renderChrome() {
   btn.title = isDone ? "Volver a tareas pendientes" : "Ver tareas completadas hoy";
 }
 
+function renderSourceTabs() {
+  const tabs = document.querySelectorAll(".source-tab");
+  tabs.forEach(tab => {
+    const isActive = tab.dataset.source === state.taskSource;
+    tab.classList.toggle("active", isActive);
+    tab.setAttribute("aria-selected", String(isActive));
+  });
+}
+
 function setEmptyState() {
   const empty = $("#emptyState");
   const h = empty.querySelector("h2");
   const p = empty.querySelector("p");
+  const srcLabel = state.taskSource === "recurrent" ? "recurrentes" : "emergentes";
   if (state.view === "done") {
     const totalDone = completedTasks().length;
     empty.querySelector(".emptystate__mark").textContent = totalDone ? "🔍" : "✓";
     h.textContent = totalDone ? "Sin completadas aquí" : "Aún nada completado";
     p.textContent = totalDone
-      ? "Ninguna tarea completada con esta combinación de filtros."
-      : "Todavía no se ha marcado ninguna tarea hoy. Aparecerán aquí en cuanto las marquéis.";
+      ? `Ninguna tarea ${srcLabel} completada con esta combinación de filtros.`
+      : `Todavía no se ha marcado ninguna tarea ${srcLabel} hoy. Aparecerán aquí en cuanto las marquéis.`;
   } else {
-    const scopeTotal = state.tasks.filter(matchesFilters).length;
+    const scopeTotal = pendingTasks().filter(matchesFilters).length;
     empty.querySelector(".emptystate__mark").textContent = "✓";
     h.textContent = scopeTotal === 0 ? "Sin tareas aquí" : "¡Todo hecho!";
     p.textContent = scopeTotal === 0
-      ? "No hay tareas para esta combinación de filtros."
+      ? `No hay tareas ${srcLabel} para esta combinación de filtros.`
       : "No quedan tareas pendientes en esta vista. Buen trabajo.";
   }
 }
@@ -331,6 +362,29 @@ $("#viewToggle").addEventListener("click", () => {
   render();
 });
 $("#reloadBtn").addEventListener("click", loadTasks);
+
+// Source tabs (Recurrentes / Emergentes)
+(function initSourceTabs() {
+  const tabs = document.querySelectorAll(".source-tab");
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      const newSource = tab.dataset.source;
+      if (newSource === state.taskSource) return;
+
+      state.taskSource = newSource;
+
+      // Clean filters that no longer apply to the new source
+      if (state.turno && !taskTurnos().includes(state.turno)) state.turno = null;
+      if (state.person && !taskPersons().includes(state.person)) state.person = null;
+
+      // Reset any optimistic marks when changing source (they are source-specific in practice)
+      state.done.clear();
+
+      renderSourceTabs(); // immediate feedback
+      render();
+    });
+  });
+})();
 
 loadTasks();
 
