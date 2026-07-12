@@ -17,6 +17,8 @@ const state = {
   extras: new Map(),   // ubicId -> Set(artId) añadidos fuera de plan
   counted: new Map(),  // ubicId -> "HH:MM"
   turno: null,
+  equipo: null,
+  producto: null,
 };
 
 const TURNOS = ["Apertura", "Entreturnos", "Cierre"];
@@ -30,6 +32,10 @@ function init() {
   state.turno = turnoPorHora(new Date().getHours());
   renderTurnos();
   $("#reloadBtn").addEventListener("click", load);
+  $("#productoSelect").addEventListener("change", () => {
+    state.producto = $("#productoSelect").value || null;
+    renderBoard();
+  });
   load();
 }
 
@@ -55,6 +61,42 @@ function renderTurnos() {
   }
 }
 
+function renderEquipo() {
+  const bar = $("#equipoBar");
+  bar.querySelectorAll(".chip").forEach((c) => c.remove());
+  const grupos = [...new Set(state.ubicaciones.map((u) => u.grupo))].sort();
+  for (const g of grupos) {
+    const b = document.createElement("button");
+    b.className = "chip" + (state.equipo === g ? " is-active" : "");
+    b.textContent = g;
+    b.addEventListener("click", () => { state.equipo = state.equipo === g ? null : g; renderEquipo(); });
+    bar.appendChild(b);
+  }
+}
+
+function renderProductos() {
+  const sel = $("#productoSelect");
+  sel.innerHTML = '<option value="">Todos</option>';
+  const productos = [...new Set(state.ubicaciones.flatMap((u) => u.plan))];
+  for (const artId of productos) {
+    const art = state.artById.get(artId);
+    if (!art) continue;
+    const opt = document.createElement("option");
+    opt.value = artId;
+    opt.textContent = art.nombre;
+    if (state.producto === artId) opt.selected = true;
+    sel.appendChild(opt);
+  }
+}
+
+function ubicacionesFiltradas() {
+  return state.ubicaciones.filter((u) => {
+    if (state.equipo && u.grupo !== state.equipo) return false;
+    if (state.producto && !u.plan.includes(state.producto)) return false;
+    return true;
+  });
+}
+
 async function load() {
   $("#board").innerHTML = '<div class="loading">Cargando ubicaciones…</div>';
   try {
@@ -75,7 +117,10 @@ function renderBoard() {
   const board = $("#board");
   board.innerHTML = "";
   state.fillers.clear();
-  const grupos = [...new Set(state.ubicaciones.map((u) => u.grupo))];
+  renderEquipo();
+  renderProductos();
+  const filtradas = ubicacionesFiltradas();
+  const grupos = [...new Set(filtradas.map((u) => u.grupo))];
   for (const grupo of grupos) {
     const grupoEl = document.createElement("section");
     grupoEl.className = "group";
@@ -89,7 +134,7 @@ function renderBoard() {
     grupoEl.appendChild(head);
     const list = document.createElement("div");
     list.className = "group__list";
-    for (const u of state.ubicaciones.filter((x) => x.grupo === grupo)) list.appendChild(locCard(u));
+    for (const u of filtradas.filter((x) => x.grupo === grupo)) list.appendChild(locCard(u));
     grupoEl.appendChild(list);
     board.appendChild(grupoEl);
   }
