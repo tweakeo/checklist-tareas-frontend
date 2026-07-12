@@ -143,7 +143,7 @@ a.viewtoggle { text-decoration: none; color: inherit; }
 .group__head {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 14px 18px; border-top: 2px solid var(--pc-ink); border-bottom: 2px solid var(--pc-ink);
-  background: var(--pc-grey-100); position: sticky; top: var(--head-h, 188px); z-index: 10;
+  background: #fff; position: sticky; top: var(--head-h, 188px); z-index: 10;
 }
 .group__title {
   font-family: var(--font-display); font-size: 24px; text-transform: uppercase;
@@ -181,6 +181,13 @@ a.viewtoggle { text-decoration: none; color: inherit; }
 .tag--prio-alta { background: var(--pc-yellow); }
 .tag--prio-media { background: var(--pc-paper-pure); }
 .tag--prio-baja { background: var(--pc-paper-pure); color: var(--pc-grey-500); }
+
+.tag--emergent {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+  font-weight: 600;
+}
 
 /* CHECK button — the hero touch target */
 .checkbtn {
