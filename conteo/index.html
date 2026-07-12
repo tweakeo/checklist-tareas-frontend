@@ -15,6 +15,10 @@
       font-size: 15px; background: var(--pc-paper-pure); border: 2px solid var(--pc-ink);
       border-radius: 0; color: var(--pc-ink);
     }
+    .dateinput select {
+      width: 100%; font-family: var(--font-mono); font-weight: 700; font-size: 14px;
+      background: transparent; border: 0; color: var(--pc-ink); cursor: pointer;
+    }
     .loc { border-bottom: 1px solid var(--pc-grey-200); }
     .loc:last-child { border-bottom: 0; }
     .loc__head {
@@ -146,6 +150,15 @@
           <span class="filterrow__label">Fecha</span>
           <input type="date" id="fechaInput" class="dateinput" />
         </div>
+        <div class="filterrow" id="equipoBar" role="group" aria-label="Filtro por equipo">
+          <span class="filterrow__label">Equipo</span>
+        </div>
+        <div class="filterrow" id="productoBar">
+          <span class="filterrow__label">Producto</span>
+          <select id="productoSelect" class="dateinput" style="min-height:46px;font-size:14px;">
+            <option value="">Todos</option>
+          </select>
+        </div>
         <div class="filterrow" id="turnoBar" role="group" aria-label="Turno del conteo">
           <span class="filterrow__label">Turno</span>
         </div>
@@ -165,6 +178,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="assertive"></div>
 
-  <script src="conteo.js?v=5"></script>
+  <script src="conteo.js?v=6"></script>
 </body>
 </html>
