@@ -17,7 +17,6 @@ const state = {
   extras: new Map(),   // ubicId -> Set(artId) añadidos fuera de plan
   counted: new Map(),  // ubicId -> "HH:MM"
   turno: null,
-  equipo: null,
   producto: null,
 };
 
@@ -32,10 +31,6 @@ function init() {
   state.turno = turnoPorHora(new Date().getHours());
   renderTurnos();
   $("#reloadBtn").addEventListener("click", load);
-  $("#equipoSelect").addEventListener("change", () => {
-    state.equipo = $("#equipoSelect").value || null;
-    renderBoard();
-  });
   $("#productoSelect").addEventListener("change", () => {
     state.producto = $("#productoSelect").value || null;
     renderBoard();
@@ -65,19 +60,6 @@ function renderTurnos() {
   }
 }
 
-function renderEquipo() {
-  const sel = $("#equipoSelect");
-  sel.innerHTML = '<option value="">Todos</option>';
-  const grupos = [...new Set(state.ubicaciones.map((u) => u.grupo))].sort();
-  for (const g of grupos) {
-    const opt = document.createElement("option");
-    opt.value = g;
-    opt.textContent = g;
-    if (state.equipo === g) opt.selected = true;
-    sel.appendChild(opt);
-  }
-}
-
 function renderProductos() {
   const sel = $("#productoSelect");
   sel.innerHTML = '<option value="">Todos</option>';
@@ -95,7 +77,6 @@ function renderProductos() {
 
 function ubicacionesFiltradas() {
   return state.ubicaciones.filter((u) => {
-    if (state.equipo && u.grupo !== state.equipo) return false;
     if (state.producto && !u.plan.includes(state.producto)) return false;
     return true;
   });
@@ -121,7 +102,6 @@ function renderBoard() {
   const board = $("#board");
   board.innerHTML = "";
   state.fillers.clear();
-  renderEquipo();
   renderProductos();
   const filtradas = ubicacionesFiltradas();
   const grupos = [...new Set(filtradas.map((u) => u.grupo))];
